@@ -13,7 +13,10 @@ const db = MONGODB_DB;
 const DB_URI = `mongodb+srv://${user}:${password}@${url}/${db}?retryWrites=true&w=majority&appName=Cluster0`;
 
   try {
-    await mongoose.connect(DB_URI);
+    await mongoose.connect(DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log('Database connection successfully');
   }catch(error){
     console.error('Something went wrong with connecting to MongoDB:', error);
