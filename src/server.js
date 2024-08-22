@@ -4,7 +4,7 @@ import cors from 'cors';
 import pino from 'pino';
 import pinoHttp from "pino-http";
 import errorHandler from "./middlewares/errorHandler.js";
-import notFoundHandler from "./middlewares/notFoundHandler.js";
+import notFoundHandler from './middlewares/notFoundHandler.js';
 import contactsRouter from "./routers/contacts.js";
 
 dotenv.config(); 
@@ -21,7 +21,7 @@ export default function setupServer() {
 
   app.use(pinoMiddlewar);
 
-  app.use(contactsRouter);
+  app.use('/contacts', contactsRouter);
 
   app.use(notFoundHandler);
 
