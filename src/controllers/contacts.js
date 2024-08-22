@@ -1,4 +1,4 @@
-import { getAllContactsDB, getContactByIdDB, createContactDB, updatedContactDB } from "../services/contacts.js";
+import { getAllContactsDB, getContactByIdDB, createContactDB, updatedContactDB, deleteContactDB } from "../services/contacts.js";
 
 export async function getAllContacts(req, res){
   const contacts = await getAllContactsDB();
@@ -52,3 +52,16 @@ export async function updatedContact(req, res){
   });
   }
 };
+
+export async function deleteContact(req, res) {
+  const { contactId } = req.params;
+
+  const contact = await deleteContactDB(contactId);
+  if(!contact){
+    res.status(404).json({
+      message: 'Contact not found'
+  });
+  } else {
+    res.sendStatus(204);
+  }
+}
