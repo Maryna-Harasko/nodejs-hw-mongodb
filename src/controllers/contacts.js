@@ -1,4 +1,10 @@
-import { getAllContactsDB, getContactByIdDB, createContactDB, updatedContactDB, deleteContactDB } from "../services/contacts.js";
+import { 
+  getAllContactsDB,
+  getContactByIdDB,
+  createContactDB,
+  updatedContactDB,
+  deleteContactDB } from "../services/contacts.js";
+import createHttpError from "http-errors";
 
 export async function getAllContacts(req, res){
   const contacts = await getAllContactsDB();
@@ -15,9 +21,7 @@ export async function getContactById(req, res){
   const contact = await getContactByIdDB(contactId);
 
   if(!contact){
-    res.status(404).json({
-      message: 'Contact not found'
-  });
+    throw createHttpError(404, 'Contact not found');
   } else {
     res.status(200).json({
       status: 200,
@@ -42,9 +46,7 @@ export async function updatedContact(req, res){
   
   const contact = await updatedContactDB(contactId, req.body, { new: true });
   if (!contact){
-    res.status(404).json({
-      message: 'Contact not found'
-  });
+    throw createHttpError(404, 'Contact not found');
   } else {
   res.status(200).json({  status: 200,
 	  message: "Successfully patched a contact!",
@@ -58,9 +60,7 @@ export async function deleteContact(req, res) {
 
   const contact = await deleteContactDB(contactId);
   if(!contact){
-    res.status(404).json({
-      message: 'Contact not found'
-  });
+    throw createHttpError(404, 'Contact not found');
   } else {
     res.sendStatus(204);
   }
