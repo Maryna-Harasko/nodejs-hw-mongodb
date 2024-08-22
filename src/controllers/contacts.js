@@ -1,4 +1,4 @@
-import { getAllContactsDB, getContactByIdDB } from "../services/contacts.js";
+import { getAllContactsDB, getContactByIdDB, createContactDB } from "../services/contacts.js";
 
 export async function getAllContacts(req, res){
   const contacts = await getAllContactsDB();
@@ -26,3 +26,22 @@ export async function getContactById(req, res){
     });
   }
 };
+
+export async function createContact(req, res) {
+
+try{
+  console.log('Request Body:', req.body);
+  const newContact = await createContactDB(req.body);
+
+  res.status(201).json({
+    status: 201,
+    message: 'Successfully created a contact!',
+    data: newContact,
+  });
+} catch (error) {
+  res.status(400).json({
+    status: 400,
+    message: error.message,
+  });
+}
+}
