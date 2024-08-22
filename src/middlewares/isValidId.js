@@ -3,7 +3,8 @@ import { isValidObjectId } from "mongoose";
 
 export const isValidId = (req, res, next) => {
   const {contactId} = req.params;
-  if(isValidObjectId(contactId)) {
+  console.log("werty", req.params);
+  if(!isValidObjectId(contactId)) {
     next(createHttpError(400, 'Bad request'));
     return;
   }
