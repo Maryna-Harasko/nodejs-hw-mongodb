@@ -3,9 +3,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import pino from 'pino';
 import pinoHttp from "pino-http";
-import serverErrorHandler from "./middlewares/serverErrorHandler.js";
-import { getAllContacts, getContactById } from "./controllers/contacts.js";
-import { ctrlWrapper } from "./utils/ctrlWrapper.js";
+import errorHandler from "./middlewares/errorHandler.js";
+import notFoundHandler from "./middlewares/notFoundHandler.js";
+import contactsRouter from "./routers/contacts.js";
 
 dotenv.config(); 
 
@@ -17,13 +17,15 @@ export default function setupServer() {
 
   app.use(cors());
 
+  app.use(express.json());
+
   app.use(pinoMiddlewar);
 
-  app.get('/contacts', ctrlWrapper(getAllContacts));
+  app.use(contactsRouter);
 
-  app.get('/contacts/:contactId', ctrlWrapper(getContactById));
+  app.use(notFoundHandler);
 
-  app.use(serverErrorHandler);
+  app.use(errorHandler);
 
   const PORT = process.env.PORT || 3000;
 
