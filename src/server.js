@@ -4,7 +4,7 @@ import cors from 'cors';
 import pino from 'pino';
 import pinoHttp from "pino-http";
 import serverErrorHandler from "./middlewares/serverErrorHandler.js";
-import { getAllContacts } from "./controllers/contacts.js";
+import { getAllContacts, getContactById } from "./controllers/contacts.js";
 
 dotenv.config(); 
 
@@ -19,6 +19,8 @@ export default function setupServer() {
   app.use(pinoMiddlewar);
 
   app.get('/contacts', getAllContacts);
+
+  app.get('/contacts/:contactId', getContactById);
 
   app.use(serverErrorHandler);
 
