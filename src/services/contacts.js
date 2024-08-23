@@ -1,11 +1,11 @@
 import Contact from "../models/contact.js";
 import { createPaginationInfo } from "../utils/createPaginationInfo.js";
 
-export const getAllContactsDB = async (page, perPage) => {
+export const getAllContactsDB = async (page, perPage, sortOrder, sortBy) => {
   const skip = perPage * (page - 1);
 
-  const [count, contacts] = await Promise.all([Contact.find().countDocuments(), Contact.find().skip(skip).limit(perPage).exec()]);
-const paginationInfo = createPaginationInfo(page, perPage, count);
+  const [count, contacts] = await Promise.all([Contact.find().countDocuments(), Contact.find().sort({ [sortBy]: sortOrder }).skip(skip).limit(perPage).exec()]);
+  const paginationInfo = createPaginationInfo(page, perPage, count);
 return {
   contacts,
   ...paginationInfo
