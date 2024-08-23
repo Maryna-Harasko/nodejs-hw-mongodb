@@ -1,6 +1,16 @@
 import Contact from "../models/contact.js";
+import { createPaginationInfo } from "../utils/createPaginationInfo.js";
 
-export const getAllContactsDB = () => Contact.find();
+export const getAllContactsDB = async (page, perPage) => {
+  const skip = perPage * (page - 1);
+
+  const [count, contacts] = await Promise.all([Contact.find().countDocuments(), Contact.find().skip(skip).limit(perPage).exec()]);
+const paginationInfo = createPaginationInfo(page, perPage, count);
+return {
+  contacts,
+  ...paginationInfo
+};
+}; 
 
 export const getContactByIdDB = (id) => Contact.findById(id);
 
