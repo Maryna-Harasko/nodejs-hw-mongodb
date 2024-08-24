@@ -19,3 +19,7 @@ export const setupSession = async (userId) => {
 
   return Session.create({ userId, ...createSession()});
 };
+
+export const logoutUser = async (sessionId) => {
+  await Session.deleteOne({ _id: sessionId });
+};

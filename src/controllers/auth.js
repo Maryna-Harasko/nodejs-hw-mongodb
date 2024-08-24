@@ -1,6 +1,6 @@
 import createHttpError from "http-errors";
 import { findUserByEmail } from "../services/auth.js";
-import { createUser, setupSession } from "../services/auth.js";
+import { createUser, setupSession, logoutUser } from "../services/auth.js";
 import bcrypt from "bcrypt";
 import { setCookies } from "../utils/setCookies.js";
 import Session from "../models/session.js";
@@ -44,7 +44,7 @@ export async function loginUser(req, res) {
   });
 };
 
-export async function refreshSession(req, res) {
+export async function refreshTokenSession(req, res) {
   const sessionId = req.cookies.sessionId;
   const refreshToken = req.cookies.refreshToken;
 
@@ -71,3 +71,14 @@ export async function refreshSession(req, res) {
     },
   });
 };
+
+export async function logoutUserSession(req, res){
+  if (req.cookies.sessionId) {
+    await logoutUser(req.cookies.sessionId);
+  }
+
+  res.clearCookie('sessionId');
+  res.clearCookie('refreshToken');
+
+  res.status(204).send();
+}
