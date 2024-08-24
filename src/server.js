@@ -6,6 +6,7 @@ import pinoHttp from "pino-http";
 import errorHandler from "./middlewares/errorHandler.js";
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import contactsRouter from "./routers/contacts.js";
+import authRouter from "./routers/auth.js";
 
 dotenv.config(); 
 
@@ -21,6 +22,7 @@ export default function setupServer() {
 
   app.use(pinoMiddlewar);
 
+  app.use('/auth', authRouter);
   app.use('/contacts', contactsRouter);
 
   app.use(notFoundHandler);
