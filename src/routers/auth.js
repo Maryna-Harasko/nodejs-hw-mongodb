@@ -3,8 +3,11 @@ import { validateBody } from "../utils/validateBody.js";
 import { createUserSchema, loginUserSchema } from "../validation/auth.js";
 import { registerUser, loginUser, refreshTokenSession, logoutUserSession } from "../controllers/auth.js";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
+import { authenticate } from "../middlewares/authenticate.js";
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.post("/register", validateBody(createUserSchema), ctrlWrapper(registerUser));
 
