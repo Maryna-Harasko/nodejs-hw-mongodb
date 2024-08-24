@@ -7,6 +7,7 @@ import errorHandler from "./middlewares/errorHandler.js";
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import contactsRouter from "./routers/contacts.js";
 import authRouter from "./routers/auth.js";
+import cookieParser from 'cookie-parser';
 
 dotenv.config(); 
 
@@ -17,9 +18,8 @@ export default function setupServer() {
   const app = express();
 
   app.use(cors());
-
   app.use(express.json());
-
+  app.use(cookieParser());
   app.use(pinoMiddlewar);
 
   app.use('/auth', authRouter);
