@@ -1,17 +1,21 @@
 import { Router } from "express";
 import { createContact, getAllContacts, getContactById, updatedContact, deleteContact } from "../controllers/contacts.js";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
+import { validateBody } from "../utils/validateBody.js";
+import { createContactSchema } from "../validation/createContactSchema.js";
+import { updateContactSchema } from "../validation/updateContactSchema.js";
+import { isValidId } from "../middlewares/isValidId.js";
 
 const router = Router();
 
-router.get('/contacts', ctrlWrapper(getAllContacts));
+router.get('/', ctrlWrapper(getAllContacts));
 
-router.get('/contacts/:contactId', ctrlWrapper(getContactById));
+router.get('/:contactId', isValidId, ctrlWrapper(getContactById));
 
-router.post('/contacts', ctrlWrapper(createContact));
+router.post('/', validateBody(createContactSchema), ctrlWrapper(createContact));
 
-router.patch('/contacts/:contactId', ctrlWrapper(updatedContact));
+router.patch('/:contactId', isValidId, validateBody(updateContactSchema), ctrlWrapper(updatedContact));
 
-router.delete('/contacts/:contactId', ctrlWrapper(deleteContact));
+router.delete('/:contactId', isValidId, ctrlWrapper(deleteContact));
 
 export default router;

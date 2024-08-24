@@ -1,8 +1,10 @@
-import HttpError from "http-errors";
-
 function errorHandler(err, req, res, next) {
-  if (err instanceof HttpError) {
-    res.status(err.status).json({status: err.status, message: err.name, data: err});
+  if (err.status) {
+    res.status(err.status).json({
+      status: err.status,
+      message: err.message,
+      data: err
+    });
     return;
   }
   res.status(500).json({

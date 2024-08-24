@@ -1,7 +1,7 @@
-import createError from 'http-errors';
+import createHttpError from 'http-errors';
 
 function notFoundHandler(req, res, next) {
-  next(createError(404, 'Route non found'));
+  next(createHttpError(404, 'Route non found'));
 };
 
 export default notFoundHandler;
