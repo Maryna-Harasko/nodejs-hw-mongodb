@@ -24,6 +24,6 @@ export const logoutUser = async (sessionId) => {
   await Session.deleteOne({ _id: sessionId });
 };
 
-export const findSessionByToken = (token) => User.findOne({accessToken: token});
+export const findSessionByToken = (token) => Session.findOne({accessToken: token});
 
 export const findUserById = (userId) => User.findById(userId);

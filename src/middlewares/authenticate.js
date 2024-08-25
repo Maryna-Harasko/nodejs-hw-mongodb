@@ -9,7 +9,7 @@ export const authenticate = async (req, res, next) => {
     return;
   };
 
-  const {bearer, token} = authHeader.split(' ');
+  const [bearer, token] = authHeader.split(' ');
 
   if (bearer !== "Bearer" || !token) {
     next(createHttpError(401, "Access token expired"));
@@ -23,7 +23,7 @@ export const authenticate = async (req, res, next) => {
     return;
   }
 
-  if(Date.now > new Date.now(session.accessTokenValidUntil)) {
+  if(Date.now > new Date(session.accessTokenValidUntil)) {
     next(createHttpError(401, "Access token expired"));
     return;
   }
