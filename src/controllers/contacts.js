@@ -7,6 +7,9 @@ import {
 import createHttpError from "http-errors";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
+import { saveFileToUploadDir } from "../utils/saveFileToUploadDir.js";
+import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+import { ENABLE_CLOUDINARY } from "../constants/index.js";
 
 export async function getAllContacts(req, res){
   const {page, perPage} = parsePaginationParams(req.query);
@@ -46,10 +49,28 @@ export async function createContact(req, res) {
   });
 };
 
-export async function updatedContact(req, res){
+export async function updatedContact(req, res, next){
   const { contactId } = req.params;
-  
-  const contact = await updatedContactDB(contactId, req.body, req.user._id, { new: true });
+  const photo = req.file;
+  let photoUrl;
+
+  if (photo) {
+    if (ENABLE_CLOUDINARY === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const contact = await updatedContactDB(
+    contactId,
+    {
+      ...req.body,
+      photo: photoUrl,
+    },
+    req.user._id,
+  );
+
   if (!contact){
     throw createHttpError(404, 'Contact not found');
   } else {

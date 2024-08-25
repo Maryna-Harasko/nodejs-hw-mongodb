@@ -1,16 +1,14 @@
 import setupServer from "./server.js";
 import { initMongoConnection } from "./db/initMongoConnection.js";
+import { createDirIfNotExists } from "./utils/createDirIfNotExists.js";
+import { TEMPLATES_DIR, TEMP_UPLOAD_DIR } from "./constants/index.js";
 
 
 const app = async () => {
   try {
-    // console.log('DB_URI:', process.env.DB_URI);
-
-    // if (!process.env.DB_URI) {
-    //   throw new Error('DB_URI is not defined');
-    // }
-
     await initMongoConnection();
+    await createDirIfNotExists(TEMP_UPLOAD_DIR);
+    await createDirIfNotExists(TEMPLATES_DIR);
 
     setupServer();
   } catch (error) {
@@ -18,4 +16,4 @@ const app = async () => {
   }
 };
 
-app();
+void app();
