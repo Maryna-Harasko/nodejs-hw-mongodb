@@ -7,7 +7,10 @@
   "scripts": {
     "lint": "eslint src/**/*.js",
     "start": "node ./src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle --ext json -o docs/swagger.json",
+    "preview-docs": "redocly preview-docs"
   },
   "repository": {
     "type": "git",
@@ -22,6 +25,7 @@
   "homepage": "https://github.com/Maryna-Harasko/nodejs-hw-mongodb#readme",
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@redocly/cli": "^1.21.0",
     "eslint": "^9.9.0",
     "globals": "^15.9.0",
     "nodemon": "^3.1.4"
