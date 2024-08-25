@@ -4,6 +4,7 @@ import { createUser, setupSession, logoutUser } from "../services/auth.js";
 import bcrypt from "bcrypt";
 import { setCookies } from "../utils/setCookies.js";
 import Session from "../models/session.js";
+import { requestResetToken } from "../services/auth.js";
 
 export async function registerUser(req, res) {
   const { name, email } = req.body;
@@ -82,3 +83,15 @@ export async function logoutUserSession(req, res){
 
   res.status(204).send();
 }
+
+export const requestResetEmailController = async (req, res) => {
+  const emailSend = await requestResetToken(req.body.email);
+
+  if(!emailSend) throw createHttpError(500, "Failed to send reset password email.");
+
+  res.status(200).json({
+    message: 'Reset password email has been successfully sent.',
+    status: 200,
+    data: {},
+  });
+};
