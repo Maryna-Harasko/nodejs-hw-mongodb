@@ -7,6 +7,7 @@ import {
 import createHttpError from "http-errors";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
+import { handlePhotoUpload } from "../utils/photoHandler.js";
 
 export async function getAllContacts(req, res){
   const {page, perPage} = parsePaginationParams(req.query);
@@ -36,7 +37,10 @@ export async function getContactById(req, res){
 };
 
 export async function createContact(req, res) {
-  const contactData = { ...req.body, userId: req.user._id };
+  const photoUrl = await handlePhotoUpload(req.file);
+
+  const contactData = { ...req.body, userId: req.user._id, photo: photoUrl };
+
   const newContact = await createContactDB(contactData);
 
   res.status(201).json({
@@ -46,10 +50,19 @@ export async function createContact(req, res) {
   });
 };
 
-export async function updatedContact(req, res){
+export async function updatedContact(req, res, next){
   const { contactId } = req.params;
-  
-  const contact = await updatedContactDB(contactId, req.body, req.user._id, { new: true });
+  const photoUrl = await handlePhotoUpload(req.file);
+
+  const contact = await updatedContactDB(
+    contactId,
+    {
+      ...req.body,
+      photo: photoUrl,
+    },
+    req.user._id,
+  );
+
   if (!contact){
     throw createHttpError(404, 'Contact not found');
   } else {

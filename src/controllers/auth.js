@@ -4,6 +4,7 @@ import { createUser, setupSession, logoutUser } from "../services/auth.js";
 import bcrypt from "bcrypt";
 import { setCookies } from "../utils/setCookies.js";
 import Session from "../models/session.js";
+import { requestResetToken, resetPassword } from "../services/auth.js";
 
 export async function registerUser(req, res) {
   const { name, email } = req.body;
@@ -82,3 +83,23 @@ export async function logoutUserSession(req, res){
 
   res.status(204).send();
 }
+
+export const requestResetEmailController = async (req, res) => {
+  await requestResetToken(req.body.email);
+
+  res.status(200).json({
+    message: 'Reset password email has been successfully sent.',
+    status: 200,
+    data: {},
+  });
+};
+
+export const resetPasswordController = async (req, res) => {
+ await resetPassword(req.body);
+
+  res.json({
+    message: 'Password has been successfully reset!',
+    status: 200,
+    data: {},
+  });
+};
