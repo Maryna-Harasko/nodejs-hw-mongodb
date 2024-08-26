@@ -1,0 +1,12 @@
+tags:
+  - Auth
+summary: Logout a user
+operationId: logoutUser
+description: 'Invalidate the user session'
+security:
+  - bearerAuth: []
+responses:
+  '204':
+    description: Successfully logged out, no content to return
+  '400':
+    description: Bad request

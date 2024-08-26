@@ -1,0 +1,90 @@
+tags:
+  - Contacts
+summary: Get all contacts
+operationId: getAllContacts
+description: 'Get list of users with optional sorting and pagination'
+security:
+  - bearerAuth: []
+parameters:
+  - name: page
+    in: query
+    description: The page number of pagination
+    required: false
+    schema:
+      type: integer
+      example: 1
+  - name: perPage
+    in: query
+    description: Specifies the number of contacts
+    required: false
+    schema:
+      type: integer
+      example: 10
+  - name: sortBy
+    in: query
+    description: Field to sort the contacts by
+    required: false
+    schema:
+      type: string
+      example: name
+  - name: sortOrder
+    in: query
+    description: The order of sorting (asc/desc)
+    required: false
+    schema:
+      type: string
+      enum: [asc, desc]
+      example: asc
+responses:
+  '200':
+      description: Successfully found contacts!
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status
+              - message
+              - data
+            properties:
+              status:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: Successfully found contacts!
+              data:
+                type: object
+                required:
+                  - data
+                  - page
+                  - perPage
+                  - totalItems
+                  - totalPages
+                  - hasNextPage
+                  - hasPreviousPage
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '../../components/schemas/contact.yaml'
+                  page:
+                    type: number
+                    example: 2
+                  perPage:
+                    type: number
+                    example: 10
+                  totalItems:
+                    type: number
+                    example: 4
+                  totalPages:
+                    type: number
+                    example: 4
+                  hasNextPage:
+                    type: boolean
+                    example: false
+                  hasPreviousPage:
+                    type: boolean
+                    example: true
+  '401':
+    $ref: '../../components/responses/401.yaml'
