@@ -1,10 +1,10 @@
 import Contact from "../models/contact.js";
 import { createPaginationInfo } from "../utils/createPaginationInfo.js";
 
-export const getAllContactsDB = async (page, perPage, sortOrder, sortBy) => {
+export const getAllContactsDB = async (page, perPage, sortOrder, sortBy, userId) => {
   const skip = perPage * (page - 1);
 
-  const [count, data] = await Promise.all([Contact.find().countDocuments(), Contact.find().sort({ [sortBy]: sortOrder }).skip(skip).limit(perPage).exec()]);
+  const [count, data] = await Promise.all([Contact.find({userId}).countDocuments(), Contact.find({userId}).sort({ [sortBy]: sortOrder }).skip(skip).limit(perPage).exec()]);
   const paginationInfo = createPaginationInfo(page, perPage, count);
 return {
   data,
@@ -12,10 +12,10 @@ return {
 };
 }; 
 
-export const getContactByIdDB = (id) => Contact.findById(id);
+export const getContactByIdDB = (id, userId) => Contact.findOne({_id: id, userId});
 
 export const createContactDB = (contactData) => Contact.create(contactData);
 
-export const updatedContactDB = (contactId, contactData, options = {}) => Contact.findByIdAndUpdate(contactId, contactData, options);
+export const updatedContactDB = (contactId, contactData, userId, options = {}) => Contact.findOneAndUpdate({_id: contactId, userId}, contactData, options);
 
-export const deleteContactDB = (contactId) => Contact.findByIdAndDelete(contactId);
+export const deleteContactDB = (contactId, userId) => Contact.findOneAndDelete({ _id: contactId, userId });

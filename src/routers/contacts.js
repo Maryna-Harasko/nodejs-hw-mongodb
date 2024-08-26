@@ -5,8 +5,11 @@ import { validateBody } from "../utils/validateBody.js";
 import { createContactSchema } from "../validation/createContactSchema.js";
 import { updateContactSchema } from "../validation/updateContactSchema.js";
 import { isValidId } from "../middlewares/isValidId.js";
+import { authenticate } from "../middlewares/authenticate.js";
 
 const router = Router();
+
+router.use(authenticate);
 
 router.get('/', ctrlWrapper(getAllContacts));
 
