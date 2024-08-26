@@ -31,9 +31,9 @@ paths:
   /send-reset-email:
     post:
       $ref: "../swagger/paths/auth/send-reset-email.yaml"
-  /auth/reset-password:
+  /auth/reset-pwd:
     post:
-      $ref: "../swagger/paths/auth/reset-password.yaml"
+      $ref: "../swagger/paths/auth/reset-pwd.yaml"
   /contacts:
     get: 
       $ref: "../swagger/paths/contacts/get.yaml"
