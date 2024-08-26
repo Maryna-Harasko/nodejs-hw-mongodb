@@ -13,7 +13,7 @@ export const createUserSchema = Joi.object({
 });
 
 export const loginUserSchema = Joi.object({
-  email: Joi.string().min(3).max(20).email().required().messages({
+  email: Joi.string().min(3).email().required().messages({
     'any.required': 'Email should be is required'
   }),
   password: Joi.string().min(6).required().messages({
