@@ -23,18 +23,18 @@ properties:
     type: string
     example: 'jane.doe@example.com'
   isFavourite:
-    description: 'Specifies if the contact is a favorite'
+    description: "Specifies if the contact is a favorite"
     type: boolean
     default: false
     example: true
   contactType:
-    description: 'Type of contact'
+    description: "Type of contact"
     type: string
     enum: ['work', 'home', 'personal']
     default: 'personal'
     example: 'work'
   userId:
-    description: 'The ID of the user who owns the contacts'
+    description: "The ID of the user who owns the contacts"
     type: string
     example: 60b21b4867d1d8992e610c88
   photo:
@@ -42,12 +42,12 @@ properties:
     type: string
     format: binary
   createdAt:
-    description: 'Timestamp when the contact was created'
+    description: "Timestamp when the contact was created"
     type: string
     format: date-time
     example: '2023-08-25T09:25:30Z'
   updatedAt:
-    description: 'Timestamp when the contact was last updated'
+    description: "Timestamp when the contact was last updated"
     type: string
     format: date-time
     example: '2023-08-25T10:33:30Z'
